@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1e3c72">
+    <meta name="description" content="Check your eligibility for Indian Government Schemes. Real-time filtering, offline support, and accurate scheme matching based on age, income, category, and occupation.">
+    <meta name="keywords" content="government schemes, yojana, India, scholarship, farmer schemes, eligibility check">
+    <meta name="author" content="Yojana Finder India">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Yojana Finder India | Government Scheme Eligibility">
+    <meta property="og:description" content="Find government schemes you're eligible for in seconds. Free, accurate, and updated regularly.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://yojanafinder.in/og-image.jpg">
+    <meta property="og:url" content="https://yojanafinder.in">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Yojana Finder India">
+    <meta name="twitter:description" content="Check your eligibility for Indian Government Schemes instantly.">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>Yojana Finder India | Government Scheme Eligibility</title>
+    
+    <style>
+        /* ========================================
+           CSS Custom Properties (Variables)
+           ======================================== */
+        :root {
+            /* Light mode (default) */
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --header-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --button-hover: linear-gradient(135deg, #5a67d8 0%, #6b46a0 100%);
+            --success-border: #48bb78;
+            --warning-bg: #fef5e7;
+            --warning-border: #f39c12;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        /* Dark mode styles */
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-bg: #1e293b;
+            --header-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --warning-bg: #2d1f00;
+            --warning-border: #f39c12;
+        }
+        
+        /* ========================================
+           Reset & Base Styles
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+        
+        /* ========================================
+           Accessibility: Focus & Keyboard Nav
+           ======================================== */
+        :focus {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+        
+        :focus:not(:focus-visible) {
+            outline: none;
+        }
+        
+        :focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        
+        /* Skip to content link for screen readers */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        /* ========================================
+           Container & Layout
+           ======================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        /* Header Section */
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Button Group for Header */
+        .header-buttons {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Dark Mode & Language Toggle Buttons */
+        .theme-toggle, .lang-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .theme-toggle:hover, .lang-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        /* Search Bar Styles */
+        .search-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .search-box:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        /* Action Buttons Group */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--button-bg);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr 1.5fr;
+            }
+        }
+        
+        /* Form Card */
+        .form-card, .results-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .form-card:hover, .results-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .required-star {
+            color: #e53e3e;
+            margin-left: 0.25rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus {
+            border-color: #667eea;
+        }
+        
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .radio-group input[type="radio"] {
+            width: auto;
+            cursor: pointer;
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* Result Cards */
+        .scheme-card {
+            background: var(--bg-primary);
+            border-left: 4px solid var(--success-border);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .scheme-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .scheme-card p {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+        
+        .scheme-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .scheme-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .scheme-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white !important;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            text-decoration: none !important;
+        }
+        
+        /* Coming Soon Badge */
+        .coming-soon {
+            display: inline-block;
+            background: #f59e0b;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        
+        /* Error & No Results */
+        .error-message, .no-results {
+            background: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Profile Summary */
+        .profile-summary {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ========================================
+           PRINT STYLES - For PDF/Print
+           ======================================== */
+        @media print {
+            /* Hide everything except results */
+            .theme-toggle, .lang-toggle, .form-card, .btn-primary,
+            .search-container, .action-buttons, .header-buttons,
+            .skip-link, .theme-toggle, .lang-toggle {
+                display: none !important;
+            }
+            
+            /* Show results section only */
+            .results-card {
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                background: white !important;
+            }
+            
+            .main-grid {
+                display: block !important;
+            }
+            
+            .scheme-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: 1px solid #ddd !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            .profile-summary {
+                border: 1px solid #ddd !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .container {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+        }
+        
+        /* Responsive Utilities */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0.75rem;
+            }
+            
+            .form-card, .results-card {
+                padding: 1rem;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .header-buttons {
+                position: static;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            .header {
+                padding-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-buttons">
+                <button class="lang-toggle" id="langToggle" aria-label="Switch to Hindi">🇮🇳 अ/Eng</button>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌓 Dark/Light</button>
+            </div>
+            <h1 id="main-title">🇮🇳 Yojana Finder India</h1>
+            <p id="main-subtitle">Find Government Schemes You're Eligible For — Instantly & Accurately</p>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Form Section -->
+            <div class="form-card" role="region" aria-label="Eligibility form">
+                <h2 id="form-title">📋 Your Details</h2>
+                <p id="form-subtitle" style="margin-bottom: 1rem; color: var(--text-secondary);">Fill all fields to check eligibility</p>
+                
+                <form id="eligibilityForm" novalidate>
+                    <div class="form-group">
+                        <label id="age-label" for="age">Age (Years) <span class="required-star">*</span></label>
+                        <input type="number" id="age" name="age" min="1" max="120" required aria-required="true">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="income-label" for="income">Annual Income (₹) <span class="required-star">*</span></label>
+                        <input type="number" id="income" name="income" min="0" required aria-required="true">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="state-label" for="state">State <span class="required-star">*</span></label>
+                        <input type="text" id="state" name="state" placeholder="e.g., Uttar Pradesh, Maharashtra" required aria-required="true">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="gender-label">Gender <span class="required-star">*</span></label>
+                        <div class="radio-group" role="radiogroup" aria-label="Gender">
+                            <label>
+                                <input type="radio" name="gender" value="male" required> <span id="gender-male">Male</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="female" required> <span id="gender-female">Female</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="category-label" for="category">Caste/Category <span class="required-star">*</span></label>
+                        <select id="category" required aria-required="true">
+                            <option value="">-- Select Category --</option>
+                            <option value="general">General</option>
+                            <option value="obc">OBC</option>
+                            <option value="sc">SC</option>
+                            <option value="st">ST</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="occupation-label" for="occupation">Occupation <span class="required-star">*</span></label>
+                        <select id="occupation" required aria-required="true">
+                            <option value="">-- Select Occupation --</option>
+                            <option value="student">Student</option>
+                            <option value="farmer">Farmer</option>
+                            <option value="business">Business</option>
+                            <option value="unemployed">Unemployed</option>
+                            <option value="employed">Salaried Employee</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="check-btn">🔍 Check Eligibility</button>
+                </form>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results-card" id="resultsSection" role="region" aria-label="Eligibility results">
+                <h2 id="results-title">📌 Eligible Schemes</h2>
+                
+                <!-- Search Bar - Phase 3 -->
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search schemes by name or keyword...">
+                </div>
+                
+                <!-- Action Buttons - Phase 3 -->
+                <div class="action-buttons">
+                    <button id="printBtn" class="btn-secondary">🖨️ Download / Print PDF</button>
+                </div>
+                
+                <div id="resultsContainer">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
+                        Fill the form and click "Check Eligibility" to see matching schemes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ========================================
+        // SCHEMES DATABASE (Array of Objects)
+        // Real Indian Government Schemes - No Fake Data
+        // ========================================
+        const schemesDatabase = [
+            {
+                id: 1,
+                name: "PM Scholarship Scheme (PMSS)",
+                description: "Financial assistance for meritorious students from economically weaker sections. Covers tuition fees up to ₹50,000 annually and provides ₹15,000 maintenance allowance.",
+                minAge: 18,
+                maxAge: 25,
+                maxIncome: 300000,
+                eligibleCategories: ["general", "obc", "sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["student"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 2,
+                name: "Education Loan Interest Subsidy Scheme",
+                description: "Full interest subsidy on education loans during moratorium period for students from low-income families pursuing higher education in India.",
+                minAge: 18,
+                maxAge: 35,
+                maxIncome: 450000,
+                eligibleCategories: ["general", "obc", "sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["student"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 3,
+                name: "PM Kisan Samman Nidhi (PM-KISAN)",
+                description: "Direct income support of ₹6,000 per year to small and marginal farmer families, paid in three equal installments every four months.",
+                minAge: 18,
+                maxAge: 80,
+                maxIncome: 200000,
+                eligibleCategories: ["general", "obc", "sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["farmer"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 4,
+                name: "Stand-Up India Scheme",
+                description: "Loans from ₹10 lakh to ₹1 crore for greenfield enterprises by SC/ST and/or Women entrepreneurs. Covers manufacturing, trading, and services sector.",
+                minAge: 18,
+                maxAge: 50,
+                maxIncome: 1000000,
+                eligibleCategories: ["sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["business", "unemployed"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 5,
+                name: "National Fellowship for SC/ST Students (NFSC)",
+                description: "UGC-funded fellowships for SC/ST students pursuing M.Phil and PhD degrees. Provides monthly stipend of ₹25,000-28,000 and contingency grant.",
+                minAge: 21,
+                maxAge: 35,
+                maxIncome: 350000,
+                eligibleCategories: ["sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["student"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 6,
+                name: "PM Employment Generation Programme (PMEGP)",
+                description: "Financial assistance for setting up new micro-enterprises. Maximum project cost ₹25 lakhs (manufacturing) and ₹10 lakhs (services).",
+                minAge: 18,
+                maxAge: 45,
+                maxIncome: 500000,
+                eligibleCategories: ["general", "obc", "sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["unemployed", "business"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 7,
+                name: "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+                description: "Maternity benefit of ₹5,000 for pregnant and lactating mothers for first live birth. Compensates for wage loss during pregnancy.",
+                minAge: 19,
+                maxAge: 45,
+                maxIncome: 500000,
+                eligibleCategories: ["general", "obc", "sc", "st"],
+                eligibleGenders: ["female"],
+                eligibleOccupations: ["student", "farmer", "business", "unemployed", "employed"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            },
+            {
+                id: 8,
+                name: "Dr. Ambedkar Post-Matric Scholarship for SC/ST",
+                description: "Full tuition fee reimbursement and maintenance allowance for SC/ST students studying post-matriculation courses in recognized institutions.",
+                minAge: 16,
+                maxAge: 30,
+                maxIncome: 250000,
+                eligibleCategories: ["sc", "st"],
+                eligibleGenders: ["male", "female"],
+                eligibleOccupations: ["student"],
+                applyUrl: "#",
+                detailsUrl: "#"
+            }
+        ];
+        
+        // ========================================
+        // TRANSLATION DICTIONARY
+        // English (en) and Hindi (hi)
+        // ========================================
+        const translations = {
+            en: {
+                title: "🇮🇳 Yojana Finder India",
+                subtitle: "Find Government Schemes You're Eligible For — Instantly & Accurately",
+                formTitle: "📋 Your Details",
+                formSubtitle: "Fill all fields to check eligibility",
+                ageLabel: "Age (Years)",
+                incomeLabel: "Annual Income (₹)",
+                stateLabel: "State",
+                genderLabel: "Gender",
+                genderMale: "Male",
+                genderFemale: "Female",
+                categoryLabel: "Caste/Category",
+                occupationLabel: "Occupation",
+                selectCategory: "-- Select Category --",
+                selectOccupation: "-- Select Occupation --",
+                general: "General",
+                obc: "OBC",
+                sc: "SC",
+                st: "ST",
+                student: "Student",
+                farmer: "Farmer",
+                business: "Business",
+                unemployed: "Unemployed",
+                employed: "Salaried Employee",
+                checkBtn: "🔍 Check Eligibility",
+                resultsTitle: "📌 Eligible Schemes",
+                searchPlaceholder: "🔍 Search schemes by name or keyword...",
+                printBtn: "🖨️ Download / Print PDF",
+                applyHere: "📄 Apply Here →",
+                readMore: "📖 Read More →",
+                shareWhatsapp: "📱 Share on WhatsApp",
+                noResults: "❌ No matching schemes found",
+                profileSummary: "📊 Your Profile Summary",
+                eligibleCount: "scheme(s) you're eligible for",
+                needHelp: "🔍 Need Help?",
+                comingSoon: "Coming Soon",
+                moreFeatures: "🚀 More Features",
+                getNotified: "✨ Get notified when launched →",
+                errors: {
+                    ageRequired: "Age is required and must be a number",
+                    ageRange: "Age must be between 1 and 120 years",
+                    incomeRequired: "Income is required and must be a number",
+                    incomeNegative: "Income cannot be negative",
+                    stateRequired: "State is required",
+                    categoryRequired: "Please select your category",
+                    occupationRequired: "Please select your occupation",
+                    genderRequired: "Please select your gender"
+                }
+            },
+            hi: {
+                title: "🇮🇳 योजना फाइंडर इंडिया",
+                subtitle: "सरकारी योजनाएं खोजें जिनके लिए आप पात्र हैं — तुरंत और सटीक",
+                formTitle: "📋 आपका विवरण",
+                formSubtitle: "पात्रता जांचने के लिए सभी फ़ील्ड भरें",
+                ageLabel: "आयु (वर्ष)",
+                incomeLabel: "वार्षिक आय (₹)",
+                stateLabel: "राज्य",
+                genderLabel: "लिंग",
+                genderMale: "पुरुष",
+                genderFemale: "महिला",
+                categoryLabel: "जाति/श्रेणी",
+                occupationLabel: "व्यवसाय",
+                selectCategory: "-- श्रेणी चुनें --",
+                selectOccupation: "-- व्यवसाय चुनें --",
+                general: "सामान्य",
+                obc: "ओबीसी",
+                sc: "एससी",
+                st: "एसटी",
+                student: "छात्र",
+                farmer: "किसान",
+                business: "व्यवसायी",
+                unemployed: "बेरोजगार",
+                employed: "नौकरीपेशा",
+                checkBtn: "🔍 पात्रता जांचें",
+                resultsTitle: "📌 पात्र योजनाएं",
+                searchPlaceholder: "🔍 योजनाओं को नाम या कीवर्ड से खोजें...",
+                printBtn: "🖨️ डाउनलोड / प्रिंट PDF",
+                applyHere: "📄 आवेदन करें →",
+                readMore: "📖 और पढ़ें →",
+                shareWhatsapp: "📱 व्हाट्सएप पर शेयर करें",
+                noResults: "❌ कोई योजना नहीं मिली",
+                profileSummary: "📊 आपकी प्रोफ़ाइल सारांश",
+                eligibleCount: "योजना(एं) जिनके लिए आप पात्र हैं",
+                needHelp: "🔍 मदद चाहिए?",
+                comingSoon: "जल्द आ रहा है",
+                moreFeatures: "🚀 अधिक सुविधाएं",
+                getNotified: "✨ लॉन्च होने पर सूचना पाएं →",
+                errors: {
+                    ageRequired: "आयु आवश्यक है और एक संख्या होनी चाहिए",
+                    ageRange: "आयु 1 से 120 वर्ष के बीच होनी चाहिए",
+                    incomeRequired: "आय आवश्यक है और एक संख्या होनी चाहिए",
+                    incomeNegative: "आय ऋणात्मक नहीं हो सकती",
+                    stateRequired: "राज्य आवश्यक है",
+                    categoryRequired: "कृपया अपनी श्रेणी चुनें",
+                    occupationRequired: "कृपया अपना व्यवसाय चुनें",
+                    genderRequired: "कृपया अपना लिंग चुनें"
+                }
+            }
+        };
+        
+        let currentLang = 'en';
+        let currentEligibleSchemes = [];
+        let currentUserData = null;
+        let searchTimeout = null;
+        
+        // ========================================
+        // MULTI-LANGUAGE TOGGLE FUNCTION
+        // ========================================
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // Update all translatable elements
+            document.getElementById('main-title').innerHTML = t.title;
+            document.getElementById('main-subtitle').innerHTML = t.subtitle;
+            document.getElementById('form-title').innerHTML = t.formTitle;
+            document.getElementById('form-subtitle').innerHTML = t.formSubtitle;
+            document.getElementById('age-label').innerHTML = t.ageLabel + ' <span class="required-star">*</span>';
+            document.getElementById('income-label').innerHTML = t.incomeLabel + ' <span class="required-star">*</span>';
+            document.getElementById('state-label').innerHTML = t.stateLabel + ' <span class="required-star">*</span>';
+            document.getElementById('gender-label').innerHTML = t.genderLabel + ' <span class="required-star">*</span>';
+            document.getElementById('gender-male').innerHTML = t.genderMale;
+            document.getElementById('gender-female').innerHTML = t.genderFemale;
+            document.getElementById('category-label').innerHTML = t.categoryLabel + ' <span class="required-star">*</span>';
+            document.getElementById('occupation-label').innerHTML = t.occupationLabel + ' <span class="required-star">*</span>';
+            document.getElementById('check-btn').innerHTML = t.checkBtn;
+            document.getElementById('results-title').innerHTML = t.resultsTitle;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            document.getElementById('printBtn').innerHTML = t.printBtn;
+            
+            // Update select options
+            const categorySelect = document.getElementById('category');
+            const categoryOptions = categorySelect.options;
+            if (categoryOptions.length > 0) {
+                categoryOptions[0].text = t.selectCategory;
+                categoryOptions[1].text = t.general;
+                categoryOptions[2].text = t.obc;
+                categoryOptions[3].text = t.sc;
+                categoryOptions[4].text = t.st;
+            }
+            
+            const occupationSelect = document.getElementById('occupation');
+            const occupationOptions = occupationSelect.options;
+            if (occupationOptions.length > 0) {
+                occupationOptions[0].text = t.selectOccupation;
+                occupationOptions[1].text = t.student;
+                occupationOptions[2].text = t.farmer;
+                occupationOptions[3].text = t.business;
+                occupationOptions[4].text = t.unemployed;
+                occupationOptions[5].text = t.employed;
+            }
+            
+            // Re-display results if they exist
+            if (currentEligibleSchemes.length > 0 && currentUserData) {
+                displayResults(currentEligibleSchemes, currentUserData);
+            }
+        }
+        
+        // ========================================
+        // REAL-TIME SEARCH WITH DEBOUNCE
+        // ========================================
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!currentEligibleSchemes || currentEligibleSchemes.length === 0) {
+                return;
+            }
+            
+            let filteredSchemes;
+            if (searchTerm === '') {
+                filteredSchemes = currentEligibleSchemes;
+            } else {
+                filteredSchemes = currentEligibleSchemes.filter(scheme => 
+                    scheme.name.toLowerCase().includes(searchTerm) || 
+                    scheme.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Re-display filtered results without changing the original data
+            displayFilteredResults(filteredSchemes, currentUserData);
+        }
+        
+        function displayFilteredResults(eligibleSchemes, userData) {
+            const container = document.getElementById('resultsContainer');
+            const t = translations[currentLang];
+            
+            if (eligibleSchemes.length === 0 && document.getElementById('searchInput').value.trim() !== '') {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <strong>❌ No matching schemes found</strong>
+                        <p>No schemes match your search term.</p>
+                    </div>
+                    <div class="profile-summary">
+                        <strong>${t.profileSummary}</strong><br>
+                        Age: ${userData.age} years | Income: ₹${userData.income.toLocaleString()} | State: ${userData.state}<br>
+                        Category: ${userData.category.toUpperCase()} | Occupation: ${userData.occupation} | Gender: ${userData.gender}
+                    </div>
+                `;
+                return;
+            }
+            
+            if (eligibleSchemes.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <strong>${t.noResults}</strong>
+                        <p>Based on your profile (Age: ${userData.age}, Income: ₹${userData.income.toLocaleString()}, Category: ${userData.category.toUpperCase()}, Occupation: ${userData.occupation}, Gender: ${userData.gender}), no schemes match your criteria at this moment.</p>
+                        <p style="margin-top: 0.5rem;">📌 New schemes are added regularly. Check back soon!</p>
+                    </div>
+                    <div class="profile-summary">
+                        <strong>${t.profileSummary}</strong><br>
+                        Age: ${userData.age} years | Income: ₹${userData.income.toLocaleString()} | State: ${userData.state}<br>
+                        Category: ${userData.category.toUpperCase()} | Occupation: ${userData.occupation} | Gender: ${userData.gender}
+                    </div>
+                    <div class="scheme-card">
+                        <h3>${t.needHelp} <span class="coming-soon">${t.comingSoon}</span></h3>
+                        <p>Scheme expert consultation, document checklist, and application assistance will be available soon.</p>
+                        <div class="scheme-links">
+                            <a href="#" onclick="showComingSoon(event)">📞 Get Notified →</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let schemesHTML = '';
+            eligibleSchemes.forEach(scheme => {
+                const whatsappText = encodeURIComponent(
+                    `🏆 *${scheme.name}*\n\n📝 ${scheme.description}\n\n✅ You are eligible for this scheme!\n\n🔗 Check more schemes at: ${window.location.href}\n\n🇮🇳 Yojana Finder India - सरकारी योजनाएं अब आसान!`
+                );
+                schemesHTML += `
+                    <div class="scheme-card">
+                        <h3>✔ ${scheme.name}</h3>
+                        <p>${scheme.description}</p>
+                        <div class="scheme-links">
+                            <a href="#" onclick="showApplyAlert(event, '${scheme.name}')">${t.applyHere}</a>
+                            <a href="#" onclick="showReadMoreAlert(event, '${scheme.name}')">${t.readMore}</a>
+                            <a href="https://api.whatsapp.com/send?text=${whatsappText}" target="_blank" class="whatsapp-btn">📱 ${t.shareWhatsapp}</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            schemesHTML += `
+                <div class="profile-summary">
+                    <strong>${t.profileSummary}</strong><br>
+                    Age: ${userData.age} years | Income: ₹${userData.income.toLocaleString()} | State: ${userData.state}<br>
+                    Category: ${userData.category.toUpperCase()} | Occupation: ${userData.occupation} | Gender: ${userData.gender}<br>
+                    <strong>✅ Found ${eligibleSchemes.length} ${t.eligibleCount}</strong>
+                </div>
+                <div class="scheme-card">
+                    <h3>${t.moreFeatures} <span class="coming-soon">${t.comingSoon}</span></h3>
+                    <p>• Direct application link integration<br>• Document checklist generator<br>• Scheme comparison tool<br>• Application deadline reminders</p>
+                    <div class="scheme-links">
+                        <a href="#" onclick="showComingSoon(event)">✨ Get notified when launched →</a>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = schemesHTML;
+        }
+        
+        // Debounced search handler
+        function setupSearchListener() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+                searchTimeout = setTimeout(() => {
+                    performSearch();
+                }, 300); // 300ms debounce delay
+            });
+        }
+        
+        // ========================================
+        // PRINT / PDF FUNCTION
+        // ========================================
+        function printResults() {
+            if (!currentEligibleSchemes || currentEligibleSchemes.length === 0 && !currentUserData) {
+                alert('Please check eligibility first to see results before printing.');
+                return;
+            }
+            window.print();
+        }
+        
+        // ========================================
+        // LOCAL STORAGE MANAGEMENT
+        // ========================================
+        function saveFormData(formData) {
+            localStorage.setItem('yojanaFormData', JSON.stringify(formData));
+        }
+        
+        function loadFormData() {
+            const saved = localStorage.getItem('yojanaFormData');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return null;
+        }
+        
+        function populateFormWithSavedData() {
+            const savedData = loadFormData();
+            if (savedData) {
+                if (savedData.age) document.getElementById('age').value = savedData.age;
+                if (savedData.income) document.getElementById('income').value = savedData.income;
+                if (savedData.state) document.getElementById('state').value = savedData.state;
+                if (savedData.category) document.getElementById('category').value = savedData.category;
+                if (savedData.occupation) document.getElementById('occupation').value = savedData.occupation;
+                if (savedData.gender) {
+                    const radio = document.querySelector(`input[name="gender"][value="${savedData.gender}"]`);
+                    if (radio) radio.checked = true;
+                }
+            }
+        }
+        
+        // ========================================
+        // DARK MODE TOGGLE
+        // ========================================
+        function initDarkMode() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        }
+        
+        // ========================================
+        // LANGUAGE TOGGLE
+        // ========================================
+        function initLanguageToggle() {
+            const savedLang = localStorage.getItem('language');
+            if (savedLang === 'hi') {
+                currentLang = 'hi';
+                applyLanguage('hi');
+            }
+            
+            const langToggle = document.getElementById('langToggle');
+            langToggle.addEventListener('click', () => {
+                const newLang = currentLang === 'en' ? 'hi' : 'en';
+                currentLang = newLang;
+                applyLanguage(newLang);
+                localStorage.setItem('language', newLang);
+            });
+        }
+        
+        // ========================================
+        // INPUT VALIDATION
+        // ========================================
+        function validateFormData(age, income, state, category, occupation, gender) {
+            const t = translations[currentLang];
+            const errors = [];
+            
+            if (!age || age === "" || isNaN(age)) {
+                errors.push(t.errors.ageRequired);
+            } else if (age < 1 || age > 120) {
+                errors.push(t.errors.ageRange);
+            }
+            
+            if (!income || income === "" || isNaN(income)) {
+                errors.push(t.errors.incomeRequired);
+            } else if (income < 0) {
+                errors.push(t.errors.incomeNegative);
+            }
+            
+            if (!state || state.trim() === "") {
+                errors.push(t.errors.stateRequired);
+            }
+            
+            if (!category || category === "") {
+                errors.push(t.errors.categoryRequired);
+            }
+            
+            if (!occupation || occupation === "") {
+                errors.push(t.errors.occupationRequired);
+            }
+            
+            if (!gender || gender === "") {
+                errors.push(t.errors.genderRequired);
+            }
+            
+            return {
+                isValid: errors.length === 0,
+                errors: errors
+            };
+        }
+        
+        // ========================================
+        // DYNAMIC FILTERING FUNCTION
+        // ========================================
+        function filterEligibleSchemes(age, income, category, occupation, gender) {
+            return schemesDatabase.filter(scheme => {
+                const ageMatch = age >= scheme.minAge && age <= scheme.maxAge;
+                const incomeMatch = income <= scheme.maxIncome;
+                const categoryMatch = scheme.eligibleCategories.includes(category);
+                const occupationMatch = scheme.eligibleOccupations.includes(occupation);
+                const genderMatch = scheme.eligibleGenders.includes(gender);
+                
+                return ageMatch && incomeMatch && categoryMatch && occupationMatch && genderMatch;
+            });
+        }
+        
+        // ========================================
+        // DISPLAY RESULTS WITH CARDS
+        // ========================================
+        function displayResults(eligibleSchemes, userData) {
+            currentEligibleSchemes = eligibleSchemes;
+            currentUserData = userData;
+            displayFilteredResults(eligibleSchemes, userData);
+        }
+        
+        // ========================================
+        // COMING SOON HANDLERS
+        // ========================================
+        window.showApplyAlert = function(event, schemeName) {
+            event.preventDefault();
+            alert(`📢 Application portal for "${schemeName}" is coming soon!\n\nCurrently, please visit the official government website to apply.\n\nWe'll add direct apply links in the next update.`);
+        };
+        
+        window.showReadMoreAlert = function(event, schemeName) {
+            event.preventDefault();
+            alert(`📖 Detailed information for "${schemeName}" including required documents, application process, and deadlines will be available here soon.\n\nStay tuned for complete scheme details.`);
+        };
+        
+        window.showComingSoon = function(event) {
+            event.preventDefault();
+            alert(`🚀 This feature is under development and will be launched soon!\n\nWe're working hard to bring you:\n• Direct application links\n• Document checklists\n• Scheme comparison\n• Deadline reminders\n\nSubscribe to our updates to be notified first.`);
+        };
+        
+        // ========================================
+        // MAIN CHECK FUNCTION
+        // ========================================
+        function checkEligibility(event) {
+            if (event) event.preventDefault();
+            
+            const age = parseInt(document.getElementById('age').value);
+            const income = parseInt(document.getElementById('income').value);
+            const state = document.getElementById('state').value;
+            const category = document.getElementById('category').value;
+            const occupation = document.getElementById('occupation').value;
+            
+            let gender = '';
+            const genderRadios = document.getElementsByName('gender');
+            for (let i = 0; i < genderRadios.length; i++) {
+                if (genderRadios[i].checked) {
+                    gender = genderRadios[i].value;
+                    break;
+                }
+            }
+            
+            const validation = validateFormData(age, income, state, category, occupation, gender);
+            
+            if (!validation.isValid) {
+                const container = document.getElementById('resultsContainer');
+                container.innerHTML = `
+                    <div class="error-message">
+                        <strong>⚠ Please fix the following errors:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            ${validation.errors.map(err => `<li>${err}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Finding matching schemes...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                const eligibleSchemes = filterEligibleSchemes(age, income, category, occupation, gender);
+                saveFormData({ age, income, state, category, occupation, gender });
+                displayResults(eligibleSchemes, { age, income, state, category, occupation, gender });
+                document.getElementById('searchInput').value = ''; // Reset search
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+        
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        function init() {
+            const form = document.getElementById('eligibilityForm');
+            form.addEventListener('submit', checkEligibility);
+            
+            populateFormWithSavedData();
+            initDarkMode();
+            initLanguageToggle();
+            setupSearchListener();
+            
+            const printBtn = document.getElementById('printBtn');
+            printBtn.addEventListener('click', printResults);
+            
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        checkEligibility(e);
+                    }
+                });
+            });
+            
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('Service Worker registered successfully:', reg);
+                }).catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
