@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1e3c72">
+    <title>Admin Panel | Yojana Finder India - Add New Scheme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .header a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .form-container h2 {
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-container h2 span {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .required-star {
+            color: #e53e3e;
+            margin-left: 0.25rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30,60,114,0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #38a169;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #e53e3e;
+            display: block;
+        }
+
+        .status-message.loading {
+            background: #e2e8f0;
+            color: #2d3748;
+            border-left: 4px solid #667eea;
+            display: block;
+        }
+
+        .scheme-preview {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .scheme-preview h3 {
+            color: #1e3c72;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-card {
+            background: #f7fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+
+        .preview-card p {
+            margin: 0.25rem 0;
+        }
+
+        .preview-card strong {
+            color: #2d3748;
+        }
+
+        @media (max-width: 640px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .checkbox-group {
+                gap: 0.75rem;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================ -->
+<!-- 🔐🔐🔐 PASSWORD YAHAN BADLO 🔐🔐🔐 -->
+<!-- Neeche di gayi line mein "YourSecretPassword123" ko apne password se replace karo -->
+<!-- Example: const ADMIN_PASSWORD = "merapassword123"; -->
+<!-- ================================================ -->
+<script>
+    // 👇👇👇 YE LINE BADLO - APNA PASSWORD YAHAN DALO 👇👇👇
+    const ADMIN_PASSWORD = "merepassword123";
+    // 👆👆👆 YAHAN APNA PASSWORD DALO 👆👆👆
+    
+    const userPass = prompt("🔐 Enter admin password to continue:");
+    if (userPass !== ADMIN_PASSWORD) {
+        document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:50px;'>⛔ Access Denied</h1>";
+        throw new Error("Access denied");
+    }
+</script>
+
+<div class="container">
+    <div class="header">
+        <h1>🚀 Yojana Finder Admin Panel</h1>
+        <p>Add new government schemes to the database — they will appear instantly on the main website</p>
+        <a href="https://darkg6421-tech.github.io/yojana-finder/" target="_blank">📱 View Main Website →</a>
+    </div>
+
+    <div class="form-container">
+        <h2>📋 Add New Scheme <span>(All fields are required unless optional)</span></h2>
+        
+        <form id="schemeForm" novalidate>
+            <div class="form-group">
+                <label>Scheme Name <span class="required-star">*</span></label>
+                <input type="text" id="schemeName" placeholder="e.g., PM Scholarship Scheme (PMSS)" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description <span class="required-star">*</span></label>
+                <textarea id="schemeDesc" placeholder="Describe the scheme, benefits, eligibility criteria..." required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Minimum Age <span class="required-star">*</span></label>
+                    <input type="number" id="minAge" placeholder="e.g., 18" min="1" max="120" required>
+                </div>
+                <div class="form-group">
+                    <label>Maximum Age <span class="required-star">*</span></label>
+                    <input type="number" id="maxAge" placeholder="e.g., 25" min="1" max="120" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Maximum Income (₹) <span class="required-star">*</span></label>
+                <input type="number" id="maxIncome" placeholder="e.g., 300000" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label class="section-title">Eligible Categories <span class="required-star">*</span></label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="category" value="general"> General</label>
+                    <label><input type="checkbox" name="category" value="obc"> OBC</label>
+                    <label><input type="checkbox" name="category" value="sc"> SC</label>
+                    <label><input type="checkbox" name="category" value="st"> ST</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="section-title">Eligible Genders <span class="required-star">*</span></label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="gender" value="male"> Male</label>
+                    <label><input type="checkbox" name="gender" value="female"> Female</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="section-title">Eligible Occupations <span class="required-star">*</span></label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="occupation" value="student"> Student</label>
+                    <label><input type="checkbox" name="occupation" value="farmer"> Farmer</label>
+                    <label><input type="checkbox" name="occupation" value="business"> Business</label>
+                    <label><input type="checkbox" name="occupation" value="unemployed"> Unemployed</label>
+                    <label><input type="checkbox" name="occupation" value="employed"> Salaried Employee</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Apply URL (Official Link)</label>
+                <input type="url" id="applyUrl" placeholder="https://example.com/scheme-apply">
+                <small style="color: #718096; font-size: 0.75rem;">Optional — leave empty if not available</small>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-submit">➕ Add Scheme to Database</button>
+        </form>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <div class="scheme-preview">
+            <h3>📄 Live Preview (How scheme will appear)</h3>
+            <div class="preview-card" id="previewCard">
+                <p><strong>Scheme Name:</strong> <span id="previewName">—</span></p>
+                <p><strong>Description:</strong> <span id="previewDesc">—</span></p>
+                <p><strong>Age Limit:</strong> <span id="previewAge">—</span></p>
+                <p><strong>Income Limit:</strong> <span id="previewIncome">—</span></p>
+                <p><strong>Categories:</strong> <span id="previewCats">—</span></p>
+                <p><strong>Genders:</strong> <span id="previewGenders">—</span></p>
+                <p><strong>Occupations:</strong> <span id="previewOccs">—</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js"
+        }
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBnfzhZfLRSjjxtkwWsaQmSGOe181VUneE",
+        authDomain: "yojana-finder.firebaseapp.com",
+        projectId: "yojana-finder",
+        storageBucket: "yojana-finder.firebasestorage.app",
+        messagingSenderId: "451612323586",
+        appId: "1:451612323586:web:b3a3c56ce6d2b02d359c1b",
+        measurementId: "G-B7TH9J3STY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('schemeForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusDiv = document.getElementById('statusMessage');
+
+    const schemeNameInput = document.getElementById('schemeName');
+    const schemeDescInput = document.getElementById('schemeDesc');
+    const minAgeInput = document.getElementById('minAge');
+    const maxAgeInput = document.getElementById('maxAge');
+    const maxIncomeInput = document.getElementById('maxIncome');
+    const applyUrlInput = document.getElementById('applyUrl');
+
+    function getSelectedValues(selector) {
+        const checkboxes = document.querySelectorAll(selector);
+        return Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+    }
+
+    function validateForm() {
+        const name = schemeNameInput.value.trim();
+        const desc = schemeDescInput.value.trim();
+        const minAge = parseInt(minAgeInput.value);
+        const maxAge = parseInt(maxAgeInput.value);
+        const maxIncome = parseInt(maxIncomeInput.value);
+        const categories = getSelectedValues('input[name="category"]:checked');
+        const genders = getSelectedValues('input[name="gender"]:checked');
+        const occupations = getSelectedValues('input[name="occupation"]:checked');
+
+        if (!name) {
+            showStatus('Please enter the scheme name', 'error');
+            schemeNameInput.focus();
+            return false;
+        }
+
+        if (!desc) {
+            showStatus('Please enter the scheme description', 'error');
+            schemeDescInput.focus();
+            return false;
+        }
+
+        if (isNaN(minAge) || minAge < 1 || minAge > 120) {
+            showStatus('Please enter a valid minimum age (1-120 years)', 'error');
+            minAgeInput.focus();
+            return false;
+        }
+
+        if (isNaN(maxAge) || maxAge < 1 || maxAge > 120) {
+            showStatus('Please enter a valid maximum age (1-120 years)', 'error');
+            maxAgeInput.focus();
+            return false;
+        }
+
+        if (minAge > maxAge) {
+            showStatus('Minimum age cannot be greater than maximum age', 'error');
+            minAgeInput.focus();
+            return false;
+        }
+
+        if (isNaN(maxIncome) || maxIncome < 0) {
+            showStatus('Please enter a valid maximum income amount', 'error');
+            maxIncomeInput.focus();
+            return false;
+        }
+
+        if (categories.length === 0) {
+            showStatus('Please select at least one eligible category', 'error');
+            return false;
+        }
+
+        if (genders.length === 0) {
+            showStatus('Please select at least one eligible gender', 'error');
+            return false;
+        }
+
+        if (occupations.length === 0) {
+            showStatus('Please select at least one eligible occupation', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    function showStatus(message, type) {
+        statusDiv.className = `status-message ${type}`;
+        statusDiv.innerHTML = type === 'loading' ? 
+            '<span>⏳ ' + message + '</span>' : 
+            (type === 'success' ? '✅ ' + message : '❌ ' + message);
+        
+        if (type !== 'loading') {
+            setTimeout(() => {
+                statusDiv.className = 'status-message';
+            }, 5000);
+        }
+    }
+
+    function updatePreview() {
+        const name = schemeNameInput.value.trim() || '—';
+        const desc = schemeDescInput.value.trim() || '—';
+        const minAge = minAgeInput.value || '?';
+        const maxAge = maxAgeInput.value || '?';
+        const maxIncome = maxIncomeInput.value ? `₹${parseInt(maxIncomeInput.value).toLocaleString()}` : '—';
+        const categories = getSelectedValues('input[name="category"]:checked');
+        const genders = getSelectedValues('input[name="gender"]:checked');
+        const occupations = getSelectedValues('input[name="occupation"]:checked');
+
+        document.getElementById('previewName').textContent = name;
+        document.getElementById('previewDesc').textContent = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
+        document.getElementById('previewAge').textContent = `${minAge} - ${maxAge} years`;
+        document.getElementById('previewIncome').textContent = maxIncome;
+        document.getElementById('previewCats').textContent = categories.length ? categories.join(', ').toUpperCase() : '—';
+        document.getElementById('previewGenders').textContent = genders.length ? genders.join(', ') : '—';
+        document.getElementById('previewOccs').textContent = occupations.length ? occupations.join(', ') : '—';
+    }
+
+    schemeNameInput.addEventListener('input', updatePreview);
+    schemeDescInput.addEventListener('input', updatePreview);
+    minAgeInput.addEventListener('input', updatePreview);
+    maxAgeInput.addEventListener('input', updatePreview);
+    maxIncomeInput.addEventListener('input', updatePreview);
+    document.querySelectorAll('input[name="category"]').forEach(cb => cb.addEventListener('change', updatePreview));
+    document.querySelectorAll('input[name="gender"]').forEach(cb => cb.addEventListener('change', updatePreview));
+    document.querySelectorAll('input[name="occupation"]').forEach(cb => cb.addEventListener('change', updatePreview));
+
+    updatePreview();
+
+    function resetForm() {
+        schemeNameInput.value = '';
+        schemeDescInput.value = '';
+        minAgeInput.value = '';
+        maxAgeInput.value = '';
+        maxIncomeInput.value = '';
+        applyUrlInput.value = '';
+        document.querySelectorAll('input[name="category"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('input[name="gender"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('input[name="occupation"]').forEach(cb => cb.checked = false);
+        updatePreview();
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        const schemeName = schemeNameInput.value.trim();
+        const schemeDesc = schemeDescInput.value.trim();
+        const minAge = parseInt(minAgeInput.value);
+        const maxAge = parseInt(maxAgeInput.value);
+        const maxIncome = parseInt(maxIncomeInput.value);
+        const categories = getSelectedValues('input[name="category"]:checked');
+        const genders = getSelectedValues('input[name="gender"]:checked');
+        const occupations = getSelectedValues('input[name="occupation"]:checked');
+        const applyUrl = applyUrlInput.value.trim() || '#';
+
+        const schemeData = {
+            name: schemeName,
+            description: schemeDesc,
+            minAge: minAge,
+            maxAge: maxAge,
+            maxIncome: maxIncome,
+            eligibleCategories: categories,
+            eligibleGenders: genders,
+            eligibleOccupations: occupations,
+            applyUrl: applyUrl,
+            detailsUrl: "#",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Adding Scheme...';
+        showStatus('Adding scheme to database...', 'loading');
+
+        try {
+            const docRef = await addDoc(collection(db, "schemes"), schemeData);
+            showStatus(`Scheme "${schemeName}" successfully added to database! ID: ${docRef.id}`, 'success');
+            resetForm();
+            submitBtn.disabled = false;
+            submitBtn.textContent = '➕ Add Scheme to Database';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (error) {
+            console.error("Firebase error:", error);
+            showStatus(`Failed to add scheme: ${error.message}`, 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = '➕ Add Scheme to Database';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            form.dispatchEvent(new Event('submit'));
+        }
+    });
+</script>
+</body>
+</html>
